@@ -1,0 +1,17 @@
+---
+
+- include_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Download Consul
+  get_url:
+    dest: /tmp/consul.zip
+    url: https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip
+  when: ansible_architecture == "x86_64"
+
+- name: Install Consul
+  unarchive:
+    dest: /usr/local/bin
+    remote_src: true
+    src: /tmp/consul.zip
+  become: true
